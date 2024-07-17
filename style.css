@@ -20,8 +20,8 @@ h1 {
 /* Tabelle */
 table {
   border-collapse: collapse;
-  width: 200px;
-  height: 200px;
+  width: 400px;
+  height: 400px;
 }
 
 /* Zellen */
@@ -37,7 +37,7 @@ table {
   border-collapse: collapse;
 }
 table td {
-  border: 5px solid rgb(121, 0, 0);
+  border: 5px solid rgb(134, 0, 0);
 }
 table tr:first-child td {
   border-top: 0;

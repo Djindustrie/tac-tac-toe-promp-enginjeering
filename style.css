@@ -56,3 +56,7 @@ table tr:last-child td {
 table tr td:last-child {
   border-right: 0;
 }
+
+.winLine {
+    position: absolute;
+}

@@ -61,58 +61,79 @@ function generateCrossSVG() {
 }
 
 function handleClick(index) {
-    if (!fields[index]) {
-        fields[index] = currentPlayer;
-        let cell = document.getElementById(`cell-${index}`);
-        cell.innerHTML = currentPlayer === "circle" ? generateCircleSVG() : generateCrossSVG();
-        cell.onclick = null; // Entfernt den onclick-Handler
+  if (!fields[index]) {
+    fields[index] = currentPlayer;
+    let cell = document.getElementById(`cell-${index}`);
+    cell.innerHTML =
+      currentPlayer === "circle" ? generateCircleSVG() : generateCrossSVG();
+    cell.onclick = null;
 
-        let winningCombination = checkWin();
-        if (winningCombination) {
-            renderWinLine(winningCombination);
-        } else {
-            currentPlayer = currentPlayer === "circle" ? "cross" : "circle";
-        }
+    let winningCombination = checkWin();
+    if (winningCombination) {
+      renderWinLine(winningCombination);
+    } else {
+      currentPlayer = currentPlayer === "circle" ? "cross" : "circle";
     }
+  }
 }
 
 function checkWin() {
-    const winningCombinations = [
-        [0, 1, 2], [3, 4, 5], [6, 7, 8], // Zeilen
-        [0, 3, 6], [1, 4, 7], [2, 5, 8], // Spalten
-        [0, 4, 8], [2, 4, 6]              // Diagonalen
-    ];
+  const winningCombinations = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
 
-    for (let combination of winningCombinations) {
-        const [a, b, c] = combination;
-        if (fields[a] && fields[a] === fields[b] && fields[a] === fields[c]) {
-            return combination; // Gibt die gewinnende Kombination zurück
-        }
+  for (let combination of winningCombinations) {
+    const [a, b, c] = combination;
+    if (fields[a] && fields[a] === fields[b] && fields[a] === fields[c]) {
+      return combination;
     }
+  }
 
-    return null;
+  return null;
 }
 
 function renderWinLine(winningCombination) {
-    let contentDiv = document.getElementById("content");
-    let svgHTML = '<svg class="winLine" width="500" height="420" viewBox="0 0 210 210" xmlns="http://www.w3.org/2000/svg">';
+  let contentDiv = document.getElementById("content");
+  let svgHTML =
+    '<svg class="winLine" width="400" height="400" viewBox="0 0 210 210" xmlns="http://www.w3.org/2000/svg">';
 
-    let [a, b, c] = winningCombination;
-    let coordinates = {
-        0: [35, 35], 1: [105, 35], 2: [175, 35],
-        3: [35, 105], 4: [105, 105], 5: [175, 105],
-        6: [35, 175], 7: [105, 175], 8: [175, 175]
-    };
+  let coordinates = {
+    0: [35, 35],
+    1: [105, 35],
+    2: [175, 35],
+    3: [35, 105],
+    4: [105, 105],
+    5: [175, 105],
+    6: [35, 175],
+    7: [105, 175],
+    8: [175, 175],
+  };
 
-    let [startX, startY] = coordinates[a];
-    let [endX, endY] = coordinates[c];
+  let [startX, startY] = coordinates[winningCombination[0]];
+  let [endX, endY] = coordinates[winningCombination[2]];
 
-    svgHTML += `
-        <line class="winLine" x1="${startX}" y1="${startY}" x2="${endX}" y2="${endY}" stroke="white" stroke-width="5">
-            <animate attributeName="x2" from="${startX}" to="${endX}" dur="1s" fill="freeze" />
-            <animate attributeName="y2" from="${startY}" to="${endY}" dur="1s" fill="freeze" />
+  svgHTML += `
+        <line x1="${startX}" y1="${startY}" x2="${endX}" y2="${endY}" stroke="white" stroke-width="2">
+            <animate attributeName="x2" from="${startX}" to="${endX}" dur="0.5s" fill="freeze" />
+            <animate attributeName="y2" from="${startY}" to="${endY}" dur="0.5s" fill="freeze" />
         </line>
     `;
-    svgHTML += '</svg>';
-    contentDiv.innerHTML += svgHTML;
+  svgHTML += "</svg>";
+
+  let svgContainer = document.createElement("div");
+  svgContainer.innerHTML = svgHTML.trim();
+  contentDiv.appendChild(svgContainer.firstChild);
 }
+
+function restartGame() {
+    fields = [null, null, null, null, null, null, null, null, null];
+    currentPlayer = "circle";
+    render();
+  }

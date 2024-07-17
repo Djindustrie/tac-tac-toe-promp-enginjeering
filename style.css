@@ -31,13 +31,18 @@ td {
   text-align: center;
   vertical-align: middle;
   font-size: 2em;
+  cursor: pointer;
+}
+
+td:hover {
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 table {
   border-collapse: collapse;
 }
 table td {
-  border: 5px solid rgb(134, 0, 0);
+  border: 5px solid rgb(139, 139, 139);
 }
 table tr:first-child td {
   border-top: 0;
